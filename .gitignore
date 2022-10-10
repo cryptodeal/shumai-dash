@@ -1,0 +1,14 @@
+types/env.d.ts
+frontend/pnpm-lock.yaml
+frontend/bun.lockb
+!.env.example
+frontend/node_modules/
+frontend/.svelte-kit
+**/.DS_Store
+frontend/.svelte/
+/build
+frontend/build
+**/*.local
+**/.env.*
+**/build/
+**/.env

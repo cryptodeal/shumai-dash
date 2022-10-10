@@ -1,0 +1,24 @@
+name: Wails build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        build:
+          [
+            { name: shumai-dash, platform: linux/amd64, os: ubuntu-latest },
+            { name: shumai-dash, platform: windows/amd64, os: windows-latest },
+            { name: shumai-dash, platform: darwin/universal, os: macos-latest },
+          ]
+    runs-on: ${{ matrix.build.os }}
+    steps:
+      - uses: actions/checkout@v3.1.0
+        with:
+          submodules: recursive
+      - uses: cryptodeal/wails-build-action@v0.0.1
+        with:
+          build-name: ${{ matrix.build.name }}
+          build-platform: ${{ matrix.build.platform }}
