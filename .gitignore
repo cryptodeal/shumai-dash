@@ -7,8 +7,9 @@ frontend/.svelte-kit
 **/.DS_Store
 frontend/.svelte/
 /build
+!frontend/build
+frontend/build/*
 !frontend/build/index.html
-frontend/build/
 **/*.local
 **/.env.*
 **/build/

@@ -10,7 +10,6 @@ jobs:
         build:
           [
             { name: shumai-dash, platform: linux/amd64, os: ubuntu-latest },
-            { name: shumai-dash, platform: windows/amd64, os: windows-latest },
             { name: shumai-dash, platform: darwin/universal, os: macos-latest },
           ]
     runs-on: ${{ matrix.build.os }}
