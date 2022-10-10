@@ -10,6 +10,9 @@ frontend/.svelte/
 !/build
 /build/*
 !/build/appicon.png
+!/build/darwin
+/build/darwin/*
+!/build/darwin/Info.plist
 !/frontend/build
 /frontend/build/*
 !/frontend/build/index.html
