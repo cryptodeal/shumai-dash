@@ -14,13 +14,12 @@ jobs:
       - name: Install Linux Wails deps
         run: sudo apt-get update && sudo apt-get install libgtk-3-0 libwebkit2gtk-4.0-dev gcc-aarch64-linux-gnu
 
-      - run: sudo apt install libmp3lame-dev
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-      - name: Setup Bun Runtime
-        uses: antongolub/action-setup-bun@v1
-
-      - name: Upgrade to Bun's canary build
-        run: bun upgrade --canary
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.2
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -51,11 +50,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun Runtime
-        uses: antongolub/action-setup-bun@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-      - name: Upgrade to Bun's canary build
-        run: bun upgrade --canary
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.2
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -89,11 +89,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun Runtime
-        uses: antongolub/action-setup-bun@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-      - name: Upgrade to Bun's canary build
-        run: bun upgrade --canary
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.2
 
       - name: Set up Go
         uses: actions/setup-go@v3
