@@ -29,7 +29,7 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build
-        run: wails build -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings -o shumai-dash_linux_amd64
+        run: wails build -o shumai-dash_linux_amd64
 
       - uses: ncipollo/release-action@v1
         with:
@@ -59,7 +59,7 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build
-        run: wails build -platform darwin/amd64 -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings
+        run: wails build -platform darwin/amd64
 
       - name: Create Zip
         run: ditto -c -k --sequesterRsrc --keepParent build/bin/shumai-dash.app shumai-dash_darwin_amd64.zip
@@ -92,7 +92,7 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build
-        run: wails build -platform darwin/arm64  -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings
+        run: wails build -platform darwin/arm64
 
       - name: Create Zip
         run: ditto -c -k --sequesterRsrc --keepParent build/bin/shumai-dash.app shumai-dash_darwin_arm64.zip
