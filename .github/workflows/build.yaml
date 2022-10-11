@@ -1,6 +1,9 @@
 name: Wails build
 
 on: [push, pull_request]
+  tags:
+    - v*
+
 
 jobs:
   build-linux:
@@ -40,8 +43,6 @@ jobs:
           replacesArtifacts: true
           artifacts: "build/bin/shumai-dash_linux_amd64"
           token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
-          tag: next
 
   build-macos-amd:
     runs-on: macos-latest
@@ -80,8 +81,6 @@ jobs:
           replacesArtifacts: true
           artifacts: "shumai-dash_darwin_amd64.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
-          tag: next
 
   build-macos-arm:
     runs-on: macos-latest
@@ -120,5 +119,3 @@ jobs:
           replacesArtifacts: true
           artifacts: "shumai-dash_darwin_arm64.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
-          tag: next
