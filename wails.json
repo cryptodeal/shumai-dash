@@ -1,6 +1,5 @@
 {
   "name": "shumai-dash",
-  "outputfilename": "shumai-dash",
   "frontend:install": "pnpm install",
   "frontend:build": "pnpm run build",
   "frontend:dev:watcher": "pnpm run dev",
