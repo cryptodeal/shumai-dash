@@ -19,6 +19,9 @@ jobs:
       - name: Setup Bun Runtime
         uses: antongolub/action-setup-bun@v1
 
+      - name: Upgrade to Bun's canary build
+        run: bun upgrade --canary
+
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
@@ -37,6 +40,8 @@ jobs:
           replacesArtifacts: true
           artifacts: "build/bin/shumai-dash_linux_amd64"
           token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          tag: next
 
   build-macos-amd:
     runs-on: macos-latest
@@ -48,6 +53,9 @@ jobs:
 
       - name: Setup Bun Runtime
         uses: antongolub/action-setup-bun@v1
+
+      - name: Upgrade to Bun's canary build
+        run: bun upgrade --canary
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -70,6 +78,8 @@ jobs:
           replacesArtifacts: true
           artifacts: "shumai-dash_darwin_amd64.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          tag: next
 
   build-macos-arm:
     runs-on: macos-latest
@@ -81,6 +91,9 @@ jobs:
 
       - name: Setup Bun Runtime
         uses: antongolub/action-setup-bun@v1
+
+      - name: Upgrade to Bun's canary build
+        run: bun upgrade --canary
 
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -103,3 +116,5 @@ jobs:
           replacesArtifacts: true
           artifacts: "shumai-dash_darwin_arm64.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          tag: next
