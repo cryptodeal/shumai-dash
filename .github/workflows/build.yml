@@ -1,19 +1,55 @@
-build-linux:
-    runs-on: ubuntu-latest
+name: Wails build
+
+on: [push, pull_request]
+
+jobs:
+
+  build-linux:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+
+        - name: Install Linux Wails deps
+          run: sudo apt-get update && sudo apt-get install libgtk-3-0 libwebkit2gtk-4.0-dev gcc-aarch64-linux-gnu
+
+        - run: sudo apt install libmp3lame-dev
+
+        - name: Setup Bun Runtime
+        uses: antongolub/action-setup-bun@v1
+        
+        - name: Set up Go
+          uses: actions/setup-go@v3
+          with:
+            go-version: ">=1.18.0"
+            cache: true
+
+        - name: Set up Wails
+          run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+        - name: Build
+          run: wails build -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings -o shumai-dash_linux_amd64
+
+        - uses: ncipollo/release-action@v1
+          with:
+            allowUpdates: true
+            replacesArtifacts: true
+            artifacts: "build/bin/shumai-dash_linux_amd64"
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos-amd:
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Install Linux Wails deps
-        run: sudo apt-get update && sudo apt-get install libgtk-3-0 libwebkit2gtk-4.0-dev gcc-aarch64-linux-gnu
-
-      - run: sudo apt install libmp3lame-dev
-
       - name: Setup Bun Runtime
       uses: antongolub/action-setup-bun@v1
-      
+
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
@@ -24,77 +60,47 @@ build-linux:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build
-        run: wails build -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings -o shumai-dash_linux_amd64
+        run: wails build -platform darwin/amd64 -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings
+
+      - name: Create Zip
+        run: ditto -c -k --sequesterRsrc --keepParent build/bin/shumai-dash.app shumai-dash_darwin_amd64.zip
 
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           replacesArtifacts: true
-          artifacts: "build/bin/shumai-dash_linux_amd64"
+          artifacts: "shumai-dash_darwin_amd64.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
 
-build-macos-amd:
-  runs-on: macos-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+  build-macos-arm:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Setup Bun Runtime
-    uses: antongolub/action-setup-bun@v1
+      - name: Setup Bun Runtime
+      uses: antongolub/action-setup-bun@v1
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ">=1.18.0"
-        cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ">=1.18.0"
+          cache: true
 
-    - name: Set up Wails
-      run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+      - name: Set up Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-    - name: Build
-      run: wails build -platform darwin/amd64 -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings
+      - name: Build
+        run: wails build -platform darwin/arm64  -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings
 
-    - name: Create Zip
-      run: ditto -c -k --sequesterRsrc --keepParent build/bin/shumai-dash.app shumai-dash_darwin_amd64.zip
+      - name: Create Zip
+        run: ditto -c -k --sequesterRsrc --keepParent build/bin/shumai-dash.app shumai-dash_darwin_arm64.zip
 
-    - uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        replacesArtifacts: true
-        artifacts: "shumai-dash_darwin_amd64.zip"
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-build-macos-arm:
-  runs-on: macos-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Setup Bun Runtime
-    uses: antongolub/action-setup-bun@v1
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ">=1.18.0"
-        cache: true
-
-    - name: Set up Wails
-      run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
-
-    - name: Build
-      run: wails build -platform darwin/arm64  -ldflags "-X main.version=$(git describe --tags --abbrev=0)"  -skipbindings
-
-    - name: Create Zip
-      run: ditto -c -k --sequesterRsrc --keepParent build/bin/shumai-dash.app shumai-dash_darwin_arm64.zip
-
-    - uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        replacesArtifacts: true
-        artifacts: "shumai-dash_darwin_arm64.zip"
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          replacesArtifacts: true
+          artifacts: "shumai-dash_darwin_arm64.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
